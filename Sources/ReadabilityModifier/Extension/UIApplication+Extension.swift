@@ -11,7 +11,12 @@ public extension UIApplication
             .filter(\.isKeyWindow)
             .first
         else { return false }
-        return !(window.frame.width == window.screen.bounds.width)
+        #if os(visionOS)
+        let screenBounds = CGRect(x: 0, y: 0, width: 1024, height: 768)
+        #else
+        let screenBounds = window.screen.bounds
+        #endif
+        return !(window.frame.width == screenBounds.width)
     }
 
     ///

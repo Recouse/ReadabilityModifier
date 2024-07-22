@@ -58,19 +58,23 @@ public struct ReadableContentGuideViewModifier: ViewModifier
                         updateWidthAndPadding(from: viewController)
                     }
                     // Observe so underlyingViewController gets called
+                    #if !os(visionOS)
                     .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in }
+                    #endif
                     .onChange(of: rect, perform: { _ in })
             }
             else
             {
                 // Use own ViewController instance to get width
                 content
+                    #if !os(visionOS)
                     .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification))
                     {
                         _ in
 
                         updateWidthAndPadding()
                     }
+                    #endif
                     .onChange(of: rect)
                     {
                         _ in
